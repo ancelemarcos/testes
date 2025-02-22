@@ -25,9 +25,20 @@ public class HelloServlet extends HttpServlet {
                          HttpServletResponse response) throws IOException {
         int quantidade = Integer.parseInt(request.getParameter("quantidade"));
         ProcessarTarefa proc = new ProcessarTarefa();
+        int y = 1;
+        int tempo = 5;
         if(quantidade > 0) {
             for (int x = 0; x < quantidade; x++) {
-                proc.usarExecutorService(this.getServletContext(), new Tarefa(x));
+                if(y==10){
+                    tempo = 30;
+                    y = 1;
+                } else if (y==5) {
+                    tempo = 20;
+                }else{
+                    tempo = 1;
+                }
+                proc.usarExecutorService(this.getServletContext(), new Tarefa(x, tempo, this.getServletContext()));
+                y++;
             }
         }
         response.setContentType("text/html;charset=UTF-8");
